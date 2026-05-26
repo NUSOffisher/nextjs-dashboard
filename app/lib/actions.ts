@@ -100,6 +100,7 @@ export async function updateInvoice(
  
   const { customerId, amount, status } = validatedFields.data;
   const amountInCents = amount * 100;
+  const sql = getSql();
  
   try {
     await sql`
@@ -117,6 +118,8 @@ export async function updateInvoice(
 
 export async function deleteInvoice(id: string) {
   throw new Error('Failed to Delete Invoice');
+
+  const sql = getSql();
   await sql`DELETE FROM invoices WHERE id = ${id}`;
   revalidatePath('/dashboard/invoices');
 }
