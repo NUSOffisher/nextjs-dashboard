@@ -7,11 +7,12 @@ import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import postgres from 'postgres';
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('Missing POSTGRES_URL environment variable');
+function getSql() {
+  if (!process.env.POSTGRES_URL) {
+    throw new Error('Missing POSTGRES_URL environment variable');
+  }
+  return postgres(process.env.POSTGRES_URL, { ssl: 'require' });
 }
-
-const sql = postgres(process.env.POSTGRES_URL!, {ssl: 'require'});
  
 const FormSchema = z.object({
   id: z.string(),
@@ -60,6 +61,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
   const amountInCents = amount * 100;
   const date = new Date().toISOString().split('T')[0];
  
+  const sql = getSql();
   // Insert data into the database
   try {
     await sql`
