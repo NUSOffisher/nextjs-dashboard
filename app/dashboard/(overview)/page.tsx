@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   title: 'Dashboard',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page() {
   const { totalPaidInvoices, totalPendingInvoices, numberOfInvoices, numberOfCustomers } = await fetchCardData();
   return (
