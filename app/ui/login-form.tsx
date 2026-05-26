@@ -11,7 +11,7 @@ import { Button } from '@/app/ui/button';
 import { useActionState } from 'react';
 import { authenticate } from '@/app/lib/actions';
 import { useSearchParams } from 'next/navigation';
-import { signIn } from "@/auth";
+import { signIn } from 'next-auth/react';
  
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -89,29 +89,21 @@ export default function LoginForm() {
       </form>
       <hr className="my-6 border-gray-300" />
 
-      {/* GitHub Login Button */}
-      <form
-        action={async () => {
-          "use server";
-          await signIn("github", { redirectTo: "/dashboard" });
-        }}
+      {/* 2. Standard Client-Side GitHub Login Button (No Form Required!) */}
+      <button 
+        onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
+        className="flex w-full justify-center rounded-md bg-gray-800 p-3 text-white hover:bg-gray-700"
       >
-        <button className="flex w-full justify-center rounded-md bg-gray-800 p-3 text-white hover:bg-gray-700">
-          Sign in with GitHub
-        </button>
-      </form>
+        Sign in with GitHub
+      </button>
 
-      {/* Google Login Button */}
-      <form
-        action={async () => {
-          "use server";
-          await signIn("google", { redirectTo: "/dashboard" });
-        }}
+      {/* 3. Standard Client-Side Google Login Button */}
+      <button 
+        onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+        className="mt-2 flex w-full justify-center rounded-md bg-red-600 p-3 text-white hover:bg-red-500"
       >
-        <button className="mt-2 flex w-full justify-center rounded-md bg-red-600 p-3 text-white hover:bg-red-500">
-          Sign in with Google
-        </button>
-      </form>
+        Sign in with Google
+      </button>
     </div>
   );
 }

@@ -18,9 +18,13 @@ async function getUser(email: string): Promise<User | undefined> {
   }
 }
  
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
   providers: [
+    // 1. IMPORT AND SPREAD the OAuth providers from your authConfig object!
+    ...(authConfig.providers || []),
+    
+    // 2. Keep your Credentials provider right alongside them
     Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
